@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal-Videos – 3. November 2026</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #181b24;
+      --accent: #3a7afe;
+      --text: #e8eaf0;
+      --muted: #9aa1b2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      background: linear-gradient(180deg, #141828 0%, var(--bg) 100%);
+    }
+    header h1 { font-size: 2rem; margin-bottom: .5rem; }
+    header p { color: var(--muted); }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem 1rem 4rem;
+      display: grid;
+      gap: 2.5rem;
+    }
+    .video-card {
+      background: var(--card);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,.4);
+    }
+    .video-card video {
+      width: 100%;
+      display: block;
+      background: #000;
+      aspect-ratio: 16 / 9;
+    }
+    .video-info {
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    .video-info h2 { font-size: 1.1rem; font-weight: 600; }
+    .video-info .meta { color: var(--muted); font-size: .85rem; }
+    a.download {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: .9rem;
+    }
+    a.download:hover { text-decoration: underline; }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .8rem;
+      padding: 2rem 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Signal-Videos</h1>
+    <p>Aufnahmen vom 3. November 2026</p>
+  </header>
+
+  <main>
+    <section class="video-card">
+      <video controls preload="metadata" src="videos/signal-2026-11-03-07-01-34-668.mp4"></video>
+      <div class="video-info">
+        <div>
+          <h2>Video 1</h2>
+          <span class="meta">aufgenommen 07:01 Uhr</span>
+        </div>
+        <a class="download" href="videos/signal-2026-11-03-07-01-34-668.mp4" download>Herunterladen</a>
+      </div>
+    </section>
+
+    <section class="video-card">
+      <video controls preload="metadata" src="videos/signal-2026-11-03-08-35-12-352.mp4"></video>
+      <div class="video-info">
+        <div>
+          <h2>Video 2</h2>
+          <span class="meta">aufgenommen 08:35 Uhr</span>
+        </div>
+        <a class="download" href="videos/signal-2026-11-03-08-35-12-352.mp4" download>Herunterladen</a>
+      </div>
+    </section>
+
+    <section class="video-card">
+      <video controls preload="metadata" src="videos/signal-2026-11-03-08-44-23-864.mp4"></video>
+      <div class="video-info">
+        <div>
+          <h2>Video 3</h2>
+          <span class="meta">aufgenommen 08:44 Uhr</span>
+        </div>
+        <a class="download" href="videos/signal-2026-11-03-08-44-23-864.mp4" download>Herunterladen</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>Hosted via GitHub Pages</footer>
+</body>
+</html>
