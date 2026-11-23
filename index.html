@@ -71,6 +71,55 @@
       font-size: .8rem;
       padding: 2rem 1rem;
     }
+    .nav-btn { display: none; }
+    @media (max-width: 820px) {
+      header { padding: 2rem 1rem 1rem; }
+      main {
+        display: flex;
+        gap: .75rem;
+        max-width: none;
+        padding: 1rem .75rem 3rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+      }
+      main::-webkit-scrollbar { display: none; }
+      .video-card {
+        flex: 0 0 86vw;
+        max-width: 420px;
+        scroll-snap-align: center;
+      }
+      .video-card video {
+        height: 60vh;
+        width: auto;
+        max-width: 100%;
+      }
+      footer { display: none; }
+      .nav-btn {
+        display: flex;
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,.18);
+        background: rgba(24,27,36,.85);
+        color: var(--text);
+        font-size: 1.4rem;
+        line-height: 1;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: opacity .25s;
+      }
+      .nav-btn.hidden { opacity: 0; pointer-events: none; }
+      #prev { left: .5rem; }
+      #next { right: .5rem; }
+    }
   </style>
 </head>
 <body>
@@ -81,7 +130,7 @@
 
   <main>
     <section class="video-card">
-      <video controls preload="metadata" src="videos/fleetwood-mac-landslide.mp4"></video>
+      <video controls playsinline preload="metadata" src="videos/fleetwood-mac-landslide.mp4"></video>
       <div class="video-info">
         <div>
           <h2>Fleetwood Mac – Landslide</h2>
@@ -91,7 +140,7 @@
     </section>
 
     <section class="video-card">
-      <video controls preload="metadata" src="videos/beatles-till-there-was-you.mp4"></video>
+      <video controls playsinline preload="metadata" src="videos/beatles-till-there-was-you.mp4"></video>
       <div class="video-info">
         <div>
           <h2>Beatles – Till There Was You</h2>
@@ -101,7 +150,7 @@
     </section>
 
     <section class="video-card">
-      <video controls preload="metadata" src="videos/pink-floyd-wish-you-were-here.mp4"></video>
+      <video controls playsinline preload="metadata" src="videos/pink-floyd-wish-you-were-here.mp4"></video>
       <div class="video-info">
         <div>
           <h2>Pink Floyd – Wish You Were Here</h2>
@@ -111,6 +160,33 @@
     </section>
   </main>
 
+  <button class="nav-btn hidden" id="prev" aria-label="Vorheriges Video">&#8592;</button>
+  <button class="nav-btn hidden" id="next" aria-label="Nächstes Video">&#8594;</button>
+
   <footer>Hosted via GitHub Pages</footer>
+
+  <script>
+    const scroller = document.querySelector('main');
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    function update() {
+      const atStart = scroller.scrollLeft <= 10;
+      const atEnd = scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth - 10;
+      prev.classList.toggle('hidden', atStart);
+      next.classList.toggle('hidden', atEnd);
+    }
+    scroller.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    function step(dir) {
+      const card = scroller.querySelector('.video-card');
+      const gap = parseFloat(getComputedStyle(scroller).columnGap) || 0;
+      scroller.scrollBy({ left: dir * (card.offsetWidth + gap), behavior: 'smooth' });
+    }
+    prev.addEventListener('click', () => step(-1));
+    next.addEventListener('click', () => step(1));
+    const vids = document.querySelectorAll('video');
+    vids.forEach(v => v.addEventListener('play', () => vids.forEach(o => { if (o !== v) o.pause(); })));
+  </script>
 </body>
 </html>
