@@ -27,11 +27,13 @@
     header h1 { font-size: 2rem; margin-bottom: .5rem; }
     header p { color: var(--muted); }
     main {
-      max-width: 960px;
+      max-width: 2040px;
       margin: 0 auto;
       padding: 1rem 1rem 4rem;
       display: grid;
-      gap: 2.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 640px));
+      justify-content: center;
+      gap: 1.5rem;
     }
     .video-card {
       background: var(--card);
@@ -41,9 +43,11 @@
     }
     .video-card video {
       width: 100%;
+      max-width: 640px;
+      height: auto;
       display: block;
+      margin: 0 auto;
       background: #000;
-      aspect-ratio: 16 / 9;
     }
     .video-info {
       padding: 1rem 1.25rem;
@@ -72,6 +76,7 @@
 <body>
   <header>
     <h1>Des Voisins</h1>
+    <p>Drei Aufnahmen zum Anhören</p>
   </header>
 
   <main>
