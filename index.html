@@ -76,6 +76,7 @@
       header { padding: 2rem 1rem 1rem; }
       main {
         display: flex;
+        position: relative;
         gap: .75rem;
         max-width: none;
         padding: 1rem .75rem 3rem;
@@ -169,22 +170,48 @@
     const scroller = document.querySelector('main');
     const prev = document.getElementById('prev');
     const next = document.getElementById('next');
-    function update() {
-      const atStart = scroller.scrollLeft <= 10;
-      const atEnd = scroller.scrollLeft >= scroller.scrollWidth - scroller.clientWidth - 10;
-      prev.classList.toggle('hidden', atStart);
-      next.classList.toggle('hidden', atEnd);
+    let animating = false;
+    function cards() {
+      return [...scroller.querySelectorAll('.video-card')];
     }
-    scroller.addEventListener('scroll', update, { passive: true });
+    function currentIndex() {
+      const cs = cards();
+      const center = scroller.scrollLeft + scroller.clientWidth / 2;
+      let best = 0, bestDist = Infinity;
+      cs.forEach((c, i) => {
+        const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - center);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      return best;
+    }
+    function update() {
+      if (animating) return;
+      const i = currentIndex();
+      const cs = cards();
+      prev.classList.toggle('hidden', i <= 0);
+      next.classList.toggle('hidden', i >= cs.length - 1);
+    }
+    function goTo(i) {
+      const cs = cards();
+      i = Math.max(0, Math.min(cs.length - 1, i));
+      animating = true;
+      const card = cs[i];
+      const target = card.offsetLeft - (scroller.clientWidth - card.offsetWidth) / 2;
+      scroller.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+      const done = () => { animating = false; update(); };
+      let last = scroller.scrollLeft;
+      let ticks = 0;
+      const watch = setInterval(() => {
+        ticks++;
+        if (scroller.scrollLeft === last || ticks > 40) { clearInterval(watch); requestAnimationFrame(done); }
+        last = scroller.scrollLeft;
+      }, 50);
+    }
+    scroller.addEventListener('scroll', () => { if (!animating) update(); }, { passive: true });
     window.addEventListener('resize', update);
     update();
-    function step(dir) {
-      const card = scroller.querySelector('.video-card');
-      const gap = parseFloat(getComputedStyle(scroller).columnGap) || 0;
-      scroller.scrollBy({ left: dir * (card.offsetWidth + gap), behavior: 'smooth' });
-    }
-    prev.addEventListener('click', () => step(-1));
-    next.addEventListener('click', () => step(1));
+    prev.addEventListener('click', () => goTo(currentIndex() - 1));
+    next.addEventListener('click', () => goTo(currentIndex() + 1));
     const vids = document.querySelectorAll('video');
     vids.forEach(v => v.addEventListener('play', () => vids.forEach(o => { if (o !== v) o.pause(); })));
   </script>
